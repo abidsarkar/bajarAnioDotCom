@@ -4,9 +4,11 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 const bcrypt = require("bcryptjs");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 //middleware
+app.use(cookieParser()); // Enable Cookie Parsing
 app.use(express.json());
 app.use(cors());
 
