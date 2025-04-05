@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
-const bcrypt = require("bcryptjs");
+
 const cookieParser = require("cookie-parser");
 
 const app = express();
@@ -19,5 +19,8 @@ mongoose
   .catch((err) => console.log(err));
 //Routes
 app.use("/api/auth", require("./routes/authRoutes"));
+const requestRoutes = require("./routes/requestRoutes");
+app.use("/api/requests", requestRoutes);
+
 const PORT = process.env.PORT || 1000;
 app.listen(PORT, () => console.log(`server running on port ${PORT}`));
