@@ -1,6 +1,5 @@
 const User = require("../../models/model/User");
-
-
+//full info with friends profile and name
 exports.getFullUserInformation = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).populate({
@@ -30,7 +29,7 @@ exports.getFullUserInformation = async (req, res) => {
       friends: friends, // Send the populated friends array
     });
   } catch (error) {
-    console.error("Error getting user profile:", error);
+    // console.error("Error getting user profile:", error);
     res.status(500).json({ msg: "Server error" });
   }
 };

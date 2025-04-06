@@ -1,5 +1,4 @@
 const User = require("../../models/model/User");
-
 // 🔹 Get User Information (After Login)
 exports.getUserProfile = async (req, res) => {
     try {

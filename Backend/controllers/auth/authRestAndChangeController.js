@@ -2,103 +2,8 @@ const User = require("../../models/model/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { sendEmail, loadTemplate } = require("../email/sendEmail");
+
 require("dotenv").config();
-
-// 🔹 Register User
-exports.register = async (req, res) => {
-  const { username, email, password, confirmPassword } = req.body;
-
-  if (password !== confirmPassword)
-    return res.status(400).json({ msg: "Passwords do not match" });
-  if (password.length < 6) {
-    return res
-      .status(400)
-      .json({ msg: "Password must be at least 6 characters long" });
-  }
-  try {
-    const existingUser = await User.findOne({ email });
-    if (existingUser)
-      return res.status(400).json({ msg: "Email is already registered" });
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const verificationCode = Math.floor(
-      100000 + Math.random() * 900000
-    ).toString();
-    const delayMilliseconds = 15 * 60 * 1000; // 15 minutes in milliseconds
-    const futureTimestamp = Date.now() + delayMilliseconds;
-    const newUser = new User({
-      username,
-      email,
-      password: hashedPassword,
-      verificationCode,
-      verificationCodeExpires: futureTimestamp,
-    });
-
-    await newUser.save();
-
-    // Load & send verification email
-    const emailContent = loadTemplate("verificationTemplate", {
-      VERIFICATION_CODE: verificationCode,
-    });
-    await sendEmail(email, "Verify Your Email - bajarAnioDotCom", emailContent);
-
-    res.status(201).json({ msg: "User registered, verify your email" });
-  } catch (error) {
-    res.status(500).json({ msg: "Server error, please try again" });
-  }
-};
-// 🔹 Verify Email
-exports.verifyEmail = async (req, res) => {
-  const { email, code } = req.body;
-
-  try {
-    const user = await User.findOne({ email });
-    if (!user || user.verificationCode !== code) {
-      return res.status(400).json({ msg: "Invalid verification code" });
-    }
-    // Check for expiration
-    if (
-      user.verificationCodeExpires &&
-      user.verificationCodeExpires < Date.now()
-    ) {
-      user.verificationCode = null;
-      await user.save(); // Clean up expired code
-      return res.status(400).json({ msg: "Verification code has expired" });
-    }
-    user.isVerified = true;
-    user.verificationCode = null;
-    user.verificationCodeExpires = null; // Clean up the expiration date.
-    await user.save();
-    // Generate a JWT token
-    const token = jwt.sign(
-      { id: user.id, email: user.email }, // Payload
-      process.env.JWT_SECRET, // Secret key
-      { expiresIn: "10d" } // Token expiration
-    );
-    // Send the token as a cookie
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Use HTTPS in production
-      sameSite: "Lax",
-      maxAge: 3600000 * 24 * 10, // 10 days
-    });
-
-    // Load & send confirmation email
-    const emailContent = loadTemplate("confirmationTemplate", {
-      USERNAME: user.username,
-    });
-    await sendEmail(
-      email,
-      "Your Account is Verified - Jotter Storage",
-      emailContent
-    );
-
-    res.status(200).json({ msg: "Email verified successfully" });
-  } catch (err) {
-    // console.error("Error during email verification:", err);
-    res.status(500).json({ msg: "Server error during email verification" });
-  }
-};
 
 // 🔹 Login User
 exports.login = async (req, res) => {
@@ -162,25 +67,9 @@ exports.requestPasswordReset = async (req, res) => {
     emailContent
   );
 
-  res.status(200).json({ msg: "OTP sent to email. Valid for 10 minutes." });
+  res.status(200).json({ msg: "OTP sent to email. Valid for 15 minutes." });
 };
-// 🔹 Verify OTP for Password Reset
-exports.verifyResetOTP = async (req, res) => {
-  const { email, otp } = req.body;
-  const user = await User.findOne({ email });
 
-  if (!user) return res.status(404).json({ msg: "User not found" });
-
-  if (user.verificationCode !== otp)
-    return res.status(400).json({ msg: "Invalid OTP" });
-
-  if (new Date() > user.verificationCodeExpires)
-    return res.status(400).json({ msg: "OTP expired" });
-
-  user.isOtpVerified = true;
-  await user.save();
-  res.status(200).json({ msg: "OTP verified. Proceed to reset password." });
-};
 
 // 🔹 Reset Password (After OTP Verification)
 exports.resetPassword = async (req, res) => {
@@ -199,7 +88,7 @@ exports.resetPassword = async (req, res) => {
 
   user.password = await bcrypt.hash(newPassword, 10);
   user.verificationCode = null;
-  user.isOtpVerified = true; // Reset OTP status
+  user.isOtpVerified = false; // Reset OTP status
   await user.save();
 
   // Generate a JWT token

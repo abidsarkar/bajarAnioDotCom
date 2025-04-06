@@ -1,6 +1,7 @@
+const { configDotenv } = require("dotenv");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
-
+require("dotenv").config();
 exports.googleLogin = passport.authenticate("google", { scope: ["profile", "email"] });
 
 exports.googleCallback = (req, res, next) => {
@@ -24,6 +25,6 @@ exports.googleCallback = (req, res, next) => {
     });
 
     // Redirect to the frontend dashboard
-    res.redirect("http://localhost:5173/dashboard");
+    res.redirect(`${process.env.frontendGoogleRedirectUrl}`);
   })(req, res, next);
 };
