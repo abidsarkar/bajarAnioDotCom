@@ -27,6 +27,7 @@ const UserSchema = new mongoose.Schema(
     verificationCode: { type: String },
     verificationCodeExpires: { type: Date },
     isVerified: { type: Boolean, default: false },
+    isOtpVerified:{type:Boolean,default:false},
     friends: [
       {
         userId: { 

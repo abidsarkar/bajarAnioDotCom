@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 const ReminderSchema = new mongoose.Schema({
-  userEmail: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
     index: true,
   },
-  friendEmail: {
+  friendId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
