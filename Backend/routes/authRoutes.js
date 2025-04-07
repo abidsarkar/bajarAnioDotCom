@@ -3,7 +3,7 @@ const router = express.Router();
 const rateLimit = require("express-rate-limit");
 require("dotenv").config();
 const authLimiter = rateLimit({
-  windowMs: `${process.env.AuthRateLimit}`, // 15 minutes
+  windowMs: process.env.AuthRateLimit, // 15 minutes
   max: 5, // limit each IP to 5 requests per windowMs
   message: "Too many attempts, please try again later",
 });

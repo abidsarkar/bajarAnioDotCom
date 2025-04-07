@@ -38,8 +38,8 @@ const UserSchema = new mongoose.Schema(
         },
         userEmail: {  // Now safe to include since emails are immutable
           type: String,
-          required: true,
-          index: true
+          required: true
+          
         },
         status: {
           type: String,

@@ -32,7 +32,7 @@ exports.deleteUserAccount = async (req, res) => {
     });
   }
 };
-exports.editUseName = async (req, res) => {
+exports.editUserName = async (req, res) => {
   try {
     const UserId = req.user.id;
     if (!UserId) {
@@ -48,7 +48,7 @@ exports.editUseName = async (req, res) => {
     }
     user.username = username;
     await user.save();
-    res.json({ msg: "Username updated successfully", user });
+    res.json({ msg: "Username updated successfully" });
   } catch (err) {
     res.status(500).json({ msg: "Something went wrong", error: err.message });
   }
@@ -85,7 +85,7 @@ exports.getFullUserInformation = async (req, res) => {
         id: user._id,
         username: user.username,
         email: user.email,
-        profilePicture: user.profilePicture || "",
+        
         friends: friends, // Send the populated friends array
       });
     } catch (error) {

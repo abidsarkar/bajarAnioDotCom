@@ -3,7 +3,7 @@ const router = express.Router();
 
 const {
   deleteUserAccount,
-  editUseName,
+  editUserName,
   editUserProfilePicture,
   getFullUserInformation,
   getUserProfile,
@@ -12,12 +12,12 @@ const {
 
 const  authMiddleware  = require("../controllers/middleware/authMiddleware");
 //deleteUserAccount
-router.delete("/deleteAccount",authMiddleware, deleteUserAccount);
+router.delete("/delete-account",authMiddleware, deleteUserAccount);
 //getUserProfile
-router.get("/getUserProfile", authMiddleware, getUserProfile);
-router.get("/getFullUserInformation", authMiddleware, getFullUserInformation);
+router.get("/get-user-profile", authMiddleware, getUserProfile);
+router.get("/get-full-user-information", authMiddleware, getFullUserInformation);
 //editUserName
-router.put("/editUserName", authMiddleware, editUseName);
+router.put("/edit-userName", authMiddleware, editUserName);
 //editUserProfilePicture
 router.put("/editUserProfilePicture", authMiddleware, editUserProfilePicture);
 
