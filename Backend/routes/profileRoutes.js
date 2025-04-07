@@ -1,15 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const deleteUserAccount = require("../controllers/profile/deleteUserAccount");
+
 const {
+  deleteUserAccount,
   editUseName,
   editUserProfilePicture,
-} = require("../controllers/profile/editUserInformationController");
-const getFullUserInformation = require("../controllers/profile/getFullUserInfoController");
-const getUserProfile = require("../controllers/profile/getUserInfoController");
-const authMiddleware = require("../controllers/middleware/authMiddleware");
+  getFullUserInformation,
+  getUserProfile,
+} = require("../controllers/profile/profileControllers");
+
+
+const  authMiddleware  = require("../controllers/middleware/authMiddleware");
 //deleteUserAccount
-router.delete("/deleteAccount", authMiddleware, deleteUserAccount);
+router.delete("/deleteAccount",authMiddleware, deleteUserAccount);
 //getUserProfile
 router.get("/getUserProfile", authMiddleware, getUserProfile);
 router.get("/getFullUserInformation", authMiddleware, getFullUserInformation);

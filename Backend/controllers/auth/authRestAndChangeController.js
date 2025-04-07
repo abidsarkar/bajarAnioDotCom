@@ -71,7 +71,7 @@ exports.requestPasswordReset = async (req, res) => {
 };
 
 
-// 🔹 Reset Password (After OTP Verification)
+// 🔹 Reset Password (After OTP Verification) forget password
 exports.resetPassword = async (req, res) => {
   const { email, newPassword, confirmPassword } = req.body;
   const user = await User.findOne({ email });

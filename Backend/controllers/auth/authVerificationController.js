@@ -44,7 +44,7 @@ exports.verifyEmail = async (req, res) => {
     });
     await sendEmail(
       email,
-      "Your Account is Verified - Jotter Storage",
+      "Your Account is Verified - BajarAnio.Com",
       emailContent
     );
 
