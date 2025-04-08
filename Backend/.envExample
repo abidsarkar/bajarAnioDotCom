@@ -1,3 +1,18 @@
-MONGO_URI=mongodb://localhost:27017/bajaranio
+MONGO_URI = mongodb://localhost:27017/bajarAnio
 PORT=5000
 JWT_SECRET=your_secret_key
+EMAIL_USER=your gmail account with google password access
+EMAIL_PASS=pass from google password 
+GOOGLE_CLIENT_ID= your google client id
+GOOGLE_CLIENT_SECRET=your google client secret
+GOOGLE_CALLBACK_URL=http://localhost:5000/api/auth/google/callback
+frontendGoogleRedirectUrl=http://localhost:5173/dashboard
+TOKEN_EXPIRY = 10d
+NODE_ENV=production
+BASE_URL= http://localhost:5173
+#ratelimite
+AuthRateLimit=15 * 60 * 1000
+#cloudinary
+CLOUDINARY_CLOUD_NAME=your cloudinary cloud name
+CLOUDINARY_API_KEY=your cloudinary api key
+CLOUDINARY_API_SECRET=your cloudinary api secret

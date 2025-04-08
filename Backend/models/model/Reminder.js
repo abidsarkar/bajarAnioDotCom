@@ -28,10 +28,11 @@ const ReminderSchema = new mongoose.Schema({
     trim: true,
   },
   image: {
-    type: String 
+    type: String,
+    default: "https://unsplash.com/photos/bunch-of-red-apples-wXuzS9xR49M",
   },
   dueTime: {
-    type: Date
+    type: Date,
   },
   priority: {
     type: String,
@@ -58,4 +59,4 @@ const ReminderSchema = new mongoose.Schema({
     type: Date,
   },
 });
-export default mongoose.model("Reminder", ReminderSchema);
+module.exports = mongoose.model("Reminder", ReminderSchema);
