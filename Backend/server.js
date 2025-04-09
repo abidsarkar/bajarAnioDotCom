@@ -25,5 +25,5 @@ app.use("/api/friends", friendsRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/reminder", reminderRoutes);
 
-const PORT = process.env.PORT || 1000;
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => console.log(`server running on port ${PORT}`));
